@@ -51,5 +51,22 @@ def fibonacci(fibonacci_input):
     else:
         return "Please input a positive integer"
 
+@app.route("/is-prime/<int:isprime_input>")
+def isprime(isprime_input):
+    result = True
+    if isprime_input == 1:
+        result = True
+    elif isprime_input > 1:
+        for i in range(2, isprime_input):
+            if (isprime_input % i == 0):
+                result = False
+                break
+            else:
+                continue
+    return jsonify(
+        input = isprime_input,
+        output = result
+    )      
+    
 if __name__ == '__main__':
     app.run(port=4000, debug = True) #makes the flask app run on port 4000
