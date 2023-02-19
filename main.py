@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 import hashlib
 import math
+import requests
 
 app = Flask(__name__)
 
@@ -16,7 +17,7 @@ def md5():
     return jsonify(
         input = "",
         output = "No input detected. Please input a string to be hashed"
-    ), 400
+    ), 404
 
 @app.route("/md5/<md5_input>")
 def md5_hash(md5_input):
@@ -37,7 +38,7 @@ def factorialindex():
      return jsonify(
         input = "",
         output = "No input detected. Please input a string to be hashed"
-    ), 400
+    ), 404
 
 @app.route("/factorial/<factorial_input>")
 def factorial(factorial_input):
@@ -65,7 +66,7 @@ def fibonacciindex():
         return jsonify(
             input = "",
             output = "Please input a positive integer"
-        ), 400
+        ), 404
 
 @app.route("/fibonacci/<fibonacci_input>")
 def fibonacci(fibonacci_input):
@@ -107,7 +108,7 @@ def isprimeindex():
     return jsonify(
         input = "",
         output = "Please input a valid positive integer"
-    ), 400
+    ), 404
 
 @app.route("/is-prime/<isprime_input>")
 def isprime(isprime_input):
@@ -136,8 +137,37 @@ def isprime(isprime_input):
     return jsonify(
         input = isprime_input,
         output = result
-    )      
-    
+    )
+
+
+#slack alert with no input string
+@app.route("/slack-alert/")
+def slack_alertindex():
+    return jsonify(
+        input = "",
+        output = False
+    ), 400
+
+#slack alert
+@app.route("/slack-alert/<message>")
+def slack_alert(message):
+#Make a POST request to the Slack webhook URL
+#The URL will be given in the #tcmg412-group-3 channel
+    response = requests.post(
+        url = "",
+        json = {"text": message}
+    )
+    #check if the request is OK (reponse code below 400)
+    if response.ok:
+        return jsonify(
+            input = message,
+            output = True
+        )
+    else:
+        return jsonify(
+            input = message,
+            output = False
+        ), 400
 # @app.errorhandler(404)
 # def page_not_found(e):
 #     return jsonify(
