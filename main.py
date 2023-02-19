@@ -152,12 +152,13 @@ def slack_alertindex():
 @app.route("/slack-alert/<message>")
 def slack_alert(message):
 #Make a POST request to the Slack webhook URL
+#The URL will be given in the #tcmg412-group-3 channel
     response = requests.post(
-        url = "https://hooks.slack.com/services/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",
+        url = "",
         json = {"text": message}
-    ), 404
-    #check if the request was successful, return boolean value
-    if response.status_code == 200:
+    )
+    #check if the request is OK (reponse code below 400)
+    if response.ok:
         return jsonify(
             input = message,
             output = True
