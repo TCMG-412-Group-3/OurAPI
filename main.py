@@ -86,7 +86,7 @@ def fibonacci(fibonacci_input):
                 fibo_list.append(n1) #adds most recent fibo value if it is less than user input
             nth = n1 + n2 #fibonacci sequence is adding 2 previous numbers
             n1 = n2 #redefining the number that is 2 spaces away
-            n2 = nth #refining the number that is 1 spacee away
+            n2 = nth #refining the number that is 1 spacee awayy
         return jsonify(
             input = fibonacci_input,
             output = fibo_list
