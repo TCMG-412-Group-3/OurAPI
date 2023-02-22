@@ -52,7 +52,7 @@ def factorial(factorial_input):
     if factorial_input >= 0:
         return jsonify(
             input = factorial_input,
-            output = str(math.factorial(factorial_input))
+            output = (math.factorial(factorial_input))
         )
     else:
         return jsonify(
