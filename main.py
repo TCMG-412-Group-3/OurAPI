@@ -80,7 +80,7 @@ def fibonacci(fibonacci_input):
             output = "Input is not a valid integer. Please input a valid integer"
         ), 400
     if fibonacci_input > 1:
-        while n1 < fibonacci_input: #while loop that calculates up until the user input
+        while n1 <= fibonacci_input: #while loop that calculates up until the user input
             if n1 > fibonacci_input: #checks if the most recent fibo value is greater than input to stop running and not add to the output list
                 break
             else:
@@ -95,7 +95,7 @@ def fibonacci(fibonacci_input):
     elif fibonacci_input == 1 or fibonacci_input == 0:
         return jsonify(
             input = fibonacci_input,
-            output = [1]
+            output = [0,1,1]
         )
     else:
         return jsonify(
@@ -126,7 +126,7 @@ def isprime(isprime_input):
             output = "Input is a negative number. Please input a positive integer"
         ), 400
     elif isprime_input == 1:
-        result = True
+        result = False
     elif isprime_input > 1:
         for i in range(2, isprime_input):
             if (isprime_input % i == 0):
