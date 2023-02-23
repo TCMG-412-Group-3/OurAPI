@@ -52,7 +52,7 @@ def factorial(factorial_input):
     if factorial_input >= 0:
         return jsonify(
             input = factorial_input,
-            output = str(math.factorial(factorial_input))
+            output = (math.factorial(factorial_input))
         )
     else:
         return jsonify(
@@ -80,7 +80,7 @@ def fibonacci(fibonacci_input):
             output = "Input is not a valid integer. Please input a valid integer"
         ), 400
     if fibonacci_input > 1:
-        while n1 < fibonacci_input: #while loop that calculates up until the user input
+        while n1 <= fibonacci_input: #while loop that calculates up until the user input
             if n1 > fibonacci_input: #checks if the most recent fibo value is greater than input to stop running and not add to the output list
                 break
             else:
@@ -95,7 +95,7 @@ def fibonacci(fibonacci_input):
     elif fibonacci_input == 1 or fibonacci_input == 0:
         return jsonify(
             input = fibonacci_input,
-            output = [1]
+            output = [0,1,1]
         )
     else:
         return jsonify(
@@ -126,7 +126,7 @@ def isprime(isprime_input):
             output = "Input is a negative number. Please input a positive integer"
         ), 400
     elif isprime_input == 1:
-        result = True
+        result = False
     elif isprime_input > 1:
         for i in range(2, isprime_input):
             if (isprime_input % i == 0):
@@ -154,7 +154,7 @@ def slack_alert(message):
 #Make a POST request to the Slack webhook URL
 #The URL will be given in the #tcmg412-group-3 channel
     response = requests.post(
-        url = "",
+        url = "https://hooks.slack.com/services/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",
         json = {"text": message}
     )
     #check if the request is OK (reponse code below 400)
