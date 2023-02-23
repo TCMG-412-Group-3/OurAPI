@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app
 
 # expose the port on which the app runs
-EXPOSE 5000 # or 80? im not too sure
+EXPOSE 4000
 
 # do we need to define environment variable
 # ENV NAME World ??
