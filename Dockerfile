@@ -1,15 +1,14 @@
 # specify the base image
-FROM python:3.8-slim-buster
+FROM python:3.10-slim-buster
 
 # set the working directory
 WORKDIR /app
 
-# copy the requirements file and install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# copy the Flask app code
+# copy current directory contents into app directory and install dependencies
 COPY . /app
+
+
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 # expose the port on which the app runs
 EXPOSE 4000
@@ -18,8 +17,8 @@ EXPOSE 4000
 # ENV NAME World ??
 
 # set the app's entry point
-CMD ["python", "app.py"]
+CMD ["python", "main.py"]
 
 # you can build the Docker image by running the following command in the project directory: "docker build -t flask-app ."
-# to run the Docker container, you can use the following command: "docker run -p 5000:5000 flask-app"
+# to run the Docker container, you can use the following command: "docker run -p 4000:80 flask-app"
 # you can push the Docker image to the Docker public repository using the docker push command: "docker push username/flask-app"
