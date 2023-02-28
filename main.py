@@ -176,4 +176,4 @@ def slack_alert(message):
 #     ), 404
 
 if __name__ == '__main__':
-    app.run(port=4000, debug = True) #makes the flask app run on port 4000
+    app.run(host='0.0.0.0', port=4000)
