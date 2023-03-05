@@ -23,7 +23,7 @@ for i in is_prime_bank:
         print ("pass")
         test_outcomes.append('pass')
     else:
-        print ("fail")
+        print ("fail ... Expected output:",is_prime_expected[is_prime_bank.index(i)])
         test_outcomes.append('fail')
         
 print (test_outcomes)
