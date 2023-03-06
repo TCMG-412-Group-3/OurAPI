@@ -32,7 +32,7 @@ if __name__ == '__main__':
 ###########################################################
 
 
-# Now here is a test we could do for factorials 
+# Now here are specific factorial test cases
 def test_factorial():
     app.testing = True
     client = app.test_client()
