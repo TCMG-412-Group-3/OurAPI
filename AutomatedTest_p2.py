@@ -1,20 +1,20 @@
 import requests, unittest, sys
 
-base_url = 'http://localhost:4000'
+base_url = 'http://localhost:8000'
 
 #test value bank and expected lists
 
-md5_bank = ['hello world', '219jjk21n312', '%20%20%wahwgahwahaw']
-md5_expected = ['5eb63bbbe01eeed093cb22bb8f5acdc3', 'f74e179c00bae8bf831335e2ea719934', '59ef20692ba6601dbb42950ac0b26779']
+md5_bank = ['hello world', '219jjk21n312', '%20%20%wahwgahwahaw', None]
+md5_expected = ['5eb63bbbe01eeed093cb22bb8f5acdc3', 'f74e179c00bae8bf831335e2ea719934', '59ef20692ba6601dbb42950ac0b26779', 'No input detected. Please input a string to be hashed']
 
-fact_bank = ['0','4','10','hello']
-fact_expected = [1,24,3628800,'Input is not a valid integer. Please input a valid integer']
+fact_bank = ['0','4','10','hello', ' ', None, '-4']
+fact_expected = [1,24,3628800,'Input is not a valid integer. Please input a valid integer','Input is not a valid integer. Please input a valid integer', 'No input detected. Please input a number to be factorialized', 'Input is a negative number. Please input a positive integer']
 
-fibo_bank = ['21','35','hello']
-fibo_expected = [[0, 1, 1, 2, 3, 5, 8, 13, 21],[0, 1, 1, 2, 3, 5, 8, 13, 21, 34],'Input is not a valid integer. Please input a valid integer']
+fibo_bank = ['21','35','hello', ' ', None, '-4', '1', '0']
+fibo_expected = [[0, 1, 1, 2, 3, 5, 8, 13, 21],[0, 1, 1, 2, 3, 5, 8, 13, 21, 34],'Input is not a valid integer. Please input a valid integer', 'Input is not a valid integer. Please input a valid integer', 'Please input a positive integer', 'Input is a negative number. Please input a positive integer', [0,1,1], [0]]
 
-is_prime_bank = ['2', '8', '3912390210', '37', 'three']
-is_prime_expected = [True, False, False, True, 'Input is not a valid integer. Please input a valid integer'] #status code is returned as integer
+is_prime_bank = ['2', '8', '3912390210', '37', 'three', ' ', None, '-4']
+is_prime_expected = [True, False, False, True, 'Input is not a valid integer. Please input a valid integer','Input is not a valid integer. Please input a valid integer', 'Please input a valid positive integer', 'Input is a negative number. Please input a positive integer'] #status code is returned as integer
 
 slack_bank = ['Hello', 'Testing', '83']
 slack_expected = [True, True, True]
@@ -22,9 +22,14 @@ slack_expected = [True, True, True]
 #make more test value lists
 
 def test_func (uri_to_test, value): #use this to test and retrieve json output
-    response = requests.get(base_url+'/'+uri_to_test+"/"+value).json()
-    output = response['output']
-    print ('Testing /'+uri_to_test+"/"+value,"... Output:",output)
+    if value == None:
+        response = requests.get(base_url+'/'+uri_to_test).json()
+        output = response['output']
+        print ('Testing /'+uri_to_test+"/","... Output:",output)
+    else:
+        response = requests.get(base_url+'/'+uri_to_test+"/"+value).json()
+        output = response['output']
+        print ('Testing /'+uri_to_test+"/"+value,"... Output:",output)
     return output
 
 class TestMethods(unittest.TestCase):

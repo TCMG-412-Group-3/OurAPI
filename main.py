@@ -22,11 +22,11 @@ def md5():
 @app.route("/md5/<md5_input>")
 def md5_hash(md5_input):
     #if the input is not a string, return HTTP 400 error
-    if not isinstance(md5_input, str):
-        return jsonify(
-            input = md5_input,
-            output = "Input is not a string. Please input a string to be hashed"
-        ), 400
+    # if not isinstance(md5_input, str):
+    #     return jsonify(
+    #         input = md5_input,
+    #         output = "Input is not a string. Please input a string to be hashed"
+    #     ), 400
     encoded_input = hashlib.md5(md5_input.encode()) #encodes the str, then turns it into md5 form
     return jsonify( #jsonify returns the json input/output format
         input = md5_input,
@@ -37,7 +37,7 @@ def md5_hash(md5_input):
 def factorialindex():
      return jsonify(
         input = "",
-        output = "No input detected. Please input a string to be hashed"
+        output = "No input detected. Please input a number to be factorialized"
     ), 404
 
 @app.route("/factorial/<factorial_input>")
@@ -92,10 +92,15 @@ def fibonacci(fibonacci_input):
             input = fibonacci_input,
             output = fibo_list
         )
-    elif fibonacci_input == 1 or fibonacci_input == 0:
+    elif fibonacci_input == 1:
         return jsonify(
             input = fibonacci_input,
             output = [0,1,1]
+        )
+    elif fibonacci_input == 0:
+        return jsonify(
+            input = fibonacci_input,
+            output = [0]
         )
     else:
         return jsonify(
