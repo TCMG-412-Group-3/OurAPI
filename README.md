@@ -12,6 +12,8 @@ first, run a docker image via the command above, and then run the following pyth
 
 AutomatedTest_p2.py
 
+Keep in mind, the API is accessible at port 8000 on the physical machine (entering localhost:8000 on our chrome browser)
+
 
 
 (AutomatedTest.py was our initial work but we created a new file for our final submission)
