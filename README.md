@@ -1,5 +1,13 @@
 # OurAPI
 
+
+Docker hub url: https://hub.docker.com/r/daniul/tcmg-group-3-app/
+
+
+To pull our docker image:
+docker pull daniul/tcmg-group-3-app:v4
+
+
 To run our docker image:
 
 docker run -p 8000:4000 daniul/tcmg-group-3-app:v4
