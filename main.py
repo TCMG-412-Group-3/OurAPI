@@ -182,7 +182,7 @@ def slack_alert(message):
 
 @app.route("/keyval", methods = ['POST', 'PUT']) #json inputs
 def keyvaljson():
-    keyval_error = " "
+    keyval_error = ""
 
     keyval_data = request.get_json()
     storage_key = keyval_data['storage-key']
@@ -205,6 +205,12 @@ def keyvaljson():
             redis.delete(storage_key)
             redis.set(storage_key, storage_val)
             keyval_status = 200
+        elif redis.exists(storage_key) == False:
+            keyval_status = 404
+            keyval_error = 'Key does not exist'
+        else:
+            keyval_status = 400
+            keyval_error = "Invalid Request"
         keyval_command = 'REPLACE VALUE FOR '+storage_key+' WITH '+storage_val
 
     if keyval_status == 200:
@@ -223,18 +229,32 @@ def keyvaljson():
 
 @app.route("/keyval/<storage_key>", methods = ['GET', 'DELETE']) #str inputs
 def keyvalstr(storage_key):
-    keyval_error = " "
-    storage_val = (redis.get(storage_key)).decode()
-
+    keyval_error = ""
+    storage_val = ''
+    
     if request.method == 'GET':
         if redis.exists(storage_key) == True:
+            storage_val = (redis.get(storage_key)).decode()
             keyval_status = 200    
-        keyval_command = 'GET KEY: '+storage_key+'/VALUE: '+storage_val
+        elif redis.exists(storage_key) == False:
+            keyval_status = 404
+            keyval_error = "Key does not exist"
+        else:
+            keyval_status = 400
+            keyval_error = "Invalid request"
+        keyval_command = 'GET KEY: '+storage_key
 
     elif request.method == 'DELETE':
         if redis.exists(storage_key) == True:
+            storage_val = (redis.get(storage_key)).decode()
             redis.delete(storage_key)
             keyval_status = 200
+        elif redis.exists(storage_key) == False:
+            keyval_status = 404
+            keyval_error = "Key does not exist"
+        else:
+            keyval_status = 400
+            keyval_error = "Invalid request"            
         keyval_command = 'DELETE '+storage_key
 
     if keyval_status == 200:
@@ -249,6 +269,7 @@ def keyvalstr(storage_key):
         result = keyval_result,
         error = keyval_error
     ), keyval_status
+    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4000)
