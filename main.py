@@ -1,9 +1,11 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import hashlib
 import math
 import requests
+import redis
 
 app = Flask(__name__)
+r = redis.Redis(host='redis-server')
 
 @app.route("/")
 def home():
@@ -185,14 +187,20 @@ def keyvaljson():
     keyval_error = ""
 
     keyval_data = request.get_json()
+    #If request is empty, return 400
+    if keyval_data == None:
+        return jsonify(
+            error = "400",
+            text = "Invalid Request, request is empty"
+        ), 400
     storage_key = keyval_data['storage-key']
     storage_val = keyval_data['storage-val']
     
     if request.method == 'POST':
-        if redis.exists(storage_key) == False:
-            redis.set(storage_key, storage_val)
+        if r.exists(storage_key) == False:
+            r.set(storage_key, storage_val)
             keyval_status = 200
-        elif redis.exists(storage_key) == True:
+        elif r.exists(storage_key) == True:
             keyval_status = 409
             keyval_error = "Key already exists"
         else:
@@ -201,11 +209,11 @@ def keyvaljson():
         keyval_command = 'CREATE '+storage_key+'/'+storage_val
     
     elif request.method == 'PUT':
-        if redis.exists(storage_key) == True:
-            redis.delete(storage_key)
-            redis.set(storage_key, storage_val)
+        if r.exists(storage_key) == True:
+            r.delete(storage_key)
+            r.set(storage_key, storage_val)
             keyval_status = 200
-        elif redis.exists(storage_key) == False:
+        elif r.exists(storage_key) == False:
             keyval_status = 404
             keyval_error = 'Key does not exist'
         else:
@@ -219,6 +227,7 @@ def keyvaljson():
         keyval_result = False
 
     return jsonify(
+        error = keyval_error,
         key = storage_key,
         value = storage_val,
         command = keyval_command,
@@ -233,10 +242,10 @@ def keyvalstr(storage_key):
     storage_val = ''
     
     if request.method == 'GET':
-        if redis.exists(storage_key) == True:
-            storage_val = (redis.get(storage_key)).decode()
+        if r.exists(storage_key) == True:
+            storage_val = (r.get(storage_key)).decode()
             keyval_status = 200    
-        elif redis.exists(storage_key) == False:
+        elif r.exists(storage_key) == False:
             keyval_status = 404
             keyval_error = "Key does not exist"
         else:
@@ -245,11 +254,11 @@ def keyvalstr(storage_key):
         keyval_command = 'GET KEY: '+storage_key
 
     elif request.method == 'DELETE':
-        if redis.exists(storage_key) == True:
-            storage_val = (redis.get(storage_key)).decode()
-            redis.delete(storage_key)
+        if r.exists(storage_key) == True:
+            storage_val = (r.get(storage_key)).decode()
+            r.delete(storage_key)
             keyval_status = 200
-        elif redis.exists(storage_key) == False:
+        elif r.exists(storage_key) == False:
             keyval_status = 404
             keyval_error = "Key does not exist"
         else:
