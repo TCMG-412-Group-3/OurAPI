@@ -187,38 +187,40 @@ def keyvaljson():
     keyval_error = ""
 
     keyval_data = request.get_json()
-    #If request is empty, return 400
-    if keyval_data == None:
-        return jsonify(
-            error = "400",
-            text = "Invalid Request, request is empty"
-        ), 400
     storage_key = keyval_data['storage-key']
     storage_val = keyval_data['storage-val']
-    
+    #If request is empty, return 400
     if request.method == 'POST':
-        if r.exists(storage_key) == False:
-            r.set(storage_key, storage_val)
-            keyval_status = 200
-        elif r.exists(storage_key) == True:
-            keyval_status = 409
-            keyval_error = "Key already exists"
-        else:
+        if not keyval_data["storage-key"] in keyval_data:
             keyval_status = 400
-            keyval_error = "Invalid request"
+            keyval_error = "Invalid Request: Request is empty"
+        else:    
+            if r.exists(storage_key) == False:
+                r.set(storage_key, storage_val)
+                keyval_status = 200
+            elif r.exists(storage_key) == True:
+                keyval_status = 409
+                keyval_error = "Key already exists"
+            else:
+                keyval_status = 400
+                keyval_error = "Invalid request"
         keyval_command = 'CREATE '+storage_key+'/'+storage_val
-    
+        
     elif request.method == 'PUT':
-        if r.exists(storage_key) == True:
-            r.delete(storage_key)
-            r.set(storage_key, storage_val)
-            keyval_status = 200
-        elif r.exists(storage_key) == False:
-            keyval_status = 404
-            keyval_error = 'Key does not exist'
-        else:
+        if not keyval_data["storage-key"] in keyval_data:
             keyval_status = 400
-            keyval_error = "Invalid Request"
+            keyval_error = "Invalid Request: Request is empty"
+        else:    
+            if r.exists(storage_key) == True:
+                r.delete(storage_key)
+                r.set(storage_key, storage_val)
+                keyval_status = 200
+            elif r.exists(storage_key) == False:
+                keyval_status = 404
+                keyval_error = 'Key does not exist'
+            else:
+                keyval_status = 400
+                keyval_error = "Invalid Request"
         keyval_command = 'REPLACE VALUE FOR '+storage_key+' WITH '+storage_val
 
     if keyval_status == 200:
@@ -235,35 +237,43 @@ def keyvaljson():
         error = keyval_error
     ), keyval_status
 
-
+@app.route('/keyval/', defaults={'storage_key': ""}, methods = ['GET', 'DELETE'])
 @app.route("/keyval/<storage_key>", methods = ['GET', 'DELETE']) #str inputs
 def keyvalstr(storage_key):
     keyval_error = ""
     storage_val = ''
     
     if request.method == 'GET':
-        if r.exists(storage_key) == True:
-            storage_val = (r.get(storage_key)).decode()
-            keyval_status = 200    
-        elif r.exists(storage_key) == False:
-            keyval_status = 404
-            keyval_error = "Key does not exist"
-        else:
+        if storage_key == "":
             keyval_status = 400
-            keyval_error = "Invalid request"
+            keyval_error = "Invalid Request: Request is empty"
+        else:
+            if r.exists(storage_key) == True:
+                storage_val = (r.get(storage_key)).decode()
+                keyval_status = 200    
+            elif r.exists(storage_key) == False:
+                keyval_status = 404
+                keyval_error = "Key does not exist"
+            else:
+                keyval_status = 400
+                keyval_error = "Invalid request"
         keyval_command = 'GET KEY: '+storage_key
 
     elif request.method == 'DELETE':
-        if r.exists(storage_key) == True:
-            storage_val = (r.get(storage_key)).decode()
-            r.delete(storage_key)
-            keyval_status = 200
-        elif r.exists(storage_key) == False:
-            keyval_status = 404
-            keyval_error = "Key does not exist"
-        else:
+        if storage_key == "":
             keyval_status = 400
-            keyval_error = "Invalid request"            
+            keyval_error = "Invalid Request: Request is empty"
+        else:        
+            if r.exists(storage_key) == True:
+                storage_val = (r.get(storage_key)).decode()
+                r.delete(storage_key)
+                keyval_status = 200
+            elif r.exists(storage_key) == False:
+                keyval_status = 404
+                keyval_error = "Key does not exist"
+            else:
+                keyval_status = 400
+                keyval_error = "Invalid request"            
         keyval_command = 'DELETE '+storage_key
 
     if keyval_status == 200:
