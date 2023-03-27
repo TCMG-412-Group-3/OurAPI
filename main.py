@@ -226,6 +226,7 @@ def keyvaljson():
     else:
         keyval_result = False
 
+    #UPDATE: remove duplicate error
     return jsonify(
         key = storage_key,
         value = storage_val,
