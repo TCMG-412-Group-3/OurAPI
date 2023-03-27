@@ -227,7 +227,6 @@ def keyvaljson():
         keyval_result = False
 
     return jsonify(
-        error = keyval_error,
         key = storage_key,
         value = storage_val,
         command = keyval_command,
