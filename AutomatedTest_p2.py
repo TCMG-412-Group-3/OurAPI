@@ -1,4 +1,4 @@
-import requests, unittest, sys
+import requests, unittest, sys, redis
 
 base_url = 'http://localhost:8000'
 
