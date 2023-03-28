@@ -1,9 +1,11 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import hashlib
 import math
 import requests
+import redis
 
 app = Flask(__name__)
+r = redis.Redis(host='redis-server')
 
 @app.route("/")
 def home():
@@ -179,6 +181,113 @@ def slack_alert(message):
 #         error = "404",
 #         text = "Not Found"
 #     ), 404
+
+@app.route("/keyval", methods = ['POST', 'PUT']) #json inputs
+def keyvaljson():
+    keyval_error = ""
+
+    keyval_data = request.get_json()
+    storage_key = keyval_data['storage-key']
+    storage_val = keyval_data['storage-val']
+    #If request is empty, return 400
+    if request.method == 'POST':
+        if not keyval_data["storage-key"] in keyval_data:
+            keyval_status = 400
+            keyval_error = "Invalid Request: Request is empty"
+        else:    
+            if r.exists(storage_key) == False:
+                r.set(storage_key, storage_val)
+                keyval_status = 200
+            elif r.exists(storage_key) == True:
+                keyval_status = 409
+                keyval_error = "Key already exists"
+            else:
+                keyval_status = 400
+                keyval_error = "Invalid request"
+        keyval_command = 'CREATE '+storage_key+'/'+storage_val
+        
+    elif request.method == 'PUT':
+        if not keyval_data["storage-key"] in keyval_data:
+            keyval_status = 400
+            keyval_error = "Invalid Request: Request is empty"
+        else:    
+            if r.exists(storage_key) == True:
+                r.delete(storage_key)
+                r.set(storage_key, storage_val)
+                keyval_status = 200
+            elif r.exists(storage_key) == False:
+                keyval_status = 404
+                keyval_error = 'Key does not exist'
+            else:
+                keyval_status = 400
+                keyval_error = "Invalid Request"
+        keyval_command = 'REPLACE VALUE FOR '+storage_key+' WITH '+storage_val
+
+    if keyval_status == 200:
+        keyval_result = True
+    else:
+        keyval_result = False
+
+    return jsonify(
+        key = storage_key,
+        value = storage_val,
+        command = keyval_command,
+        result = keyval_result,
+        error = keyval_error
+    ), keyval_status
+
+@app.route('/keyval/', defaults={'storage_key': ""}, methods = ['GET', 'DELETE'])
+@app.route("/keyval/<storage_key>", methods = ['GET', 'DELETE']) #str inputs
+def keyvalstr(storage_key):
+    keyval_error = ""
+    storage_val = ''
+    
+    if request.method == 'GET':
+        if storage_key == "":
+            keyval_status = 400
+            keyval_error = "Invalid Request: Request is empty"
+        else:
+            if r.exists(storage_key) == True:
+                storage_val = (r.get(storage_key)).decode()
+                keyval_status = 200    
+            elif r.exists(storage_key) == False:
+                keyval_status = 404
+                keyval_error = "Key does not exist"
+            else:
+                keyval_status = 400
+                keyval_error = "Invalid request"
+        keyval_command = 'GET KEY: '+storage_key
+
+    elif request.method == 'DELETE':
+        if storage_key == "":
+            keyval_status = 400
+            keyval_error = "Invalid Request: Request is empty"
+        else:        
+            if r.exists(storage_key) == True:
+                storage_val = (r.get(storage_key)).decode()
+                r.delete(storage_key)
+                keyval_status = 200
+            elif r.exists(storage_key) == False:
+                keyval_status = 404
+                keyval_error = "Key does not exist"
+            else:
+                keyval_status = 400
+                keyval_error = "Invalid request"            
+        keyval_command = 'DELETE '+storage_key
+
+    if keyval_status == 200:
+        keyval_result = True
+    else:
+        keyval_result = False
+
+    return jsonify(
+        key = storage_key,
+        value = storage_val,
+        command = keyval_command,
+        result = keyval_result,
+        error = keyval_error
+    ), keyval_status
+    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4000)
