@@ -221,7 +221,7 @@ def keyvaljson():
         keyval_command = 'CREATE '+storage_key+'/'+storage_val
         
     elif request.method == 'PUT':
-        if keyval_data["storage-key"] == '':
+        if keyval_data['storage-key'] == '':
             keyval_status = 400
             keyval_error = "Invalid Request: Request is empty"
         else:    
