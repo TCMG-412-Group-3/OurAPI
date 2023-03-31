@@ -1,6 +1,6 @@
 import requests, unittest, sys, redis
 
-base_url = 'http://localhost:8000'
+base_url = 'http://localhost:4000'
 
 #test value bank and expected lists
 

@@ -2,7 +2,7 @@ import requests, unittest, sys, redis
 
 
 class TestMethods(unittest.TestCase):
-    BASE_URL = "http://localhost:8000" 
+    BASE_URL = "http://localhost:4000" 
     
     def test_a_create_keyval_success(self):
         payload = {"storage-key": "new key", "storage-val": "new value"}
