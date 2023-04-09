@@ -3,7 +3,7 @@ import requests
 import unittest
 
 class TestAPI(unittest.TestCase): # idk if these will be useful
-    base_url = "http://localhost:8000" 
+    base_url = "http://34.135.137.212:4000" 
     
     def test_endpoint_1(self):
         url = self.base_url + "/endpoint1"
