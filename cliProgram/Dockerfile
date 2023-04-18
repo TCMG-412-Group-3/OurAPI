@@ -20,7 +20,9 @@ EXPOSE 4000
 # ENV NAME World ??
 
 # set the app's entry point
-CMD ["python", "cli.py"]
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 # you can build the Docker image by running the following command in the project directory: "docker build -t flask-app ."
 # to run the Docker container, you can use the following command: "docker run -p 4000:80 flask-app"
