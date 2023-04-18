@@ -15,7 +15,7 @@ docker pull daniul/tcmg-group-3-app:latest
 docker run -p 8000:4000 daniul/tcmg-group-3-app:latest
 
 
-## To run our automated tests:
+## To run our automated tests (before API deployment to GCP):
 
 
 ### To test all API endpoints except for CRUD endpoints, run the following file.
@@ -48,6 +48,25 @@ docker run --rm --network mynet -p 8000:4000 daniul/tcmg-group-3-app:latest
 ```
 AutomatedTest_p3.py
 ```
+
+## To run automated tests (with API deployment to GCP):
+
+### Run the following docker command
+
+```
+docker run --platform linux/arm64 -it daniul/tcmg-group-3-app:latest sh
+```
+### Run the following command (replacing the python script with AutomatedTest_p2 or AutomatedTest_p3 respectively.
+
+```
+python3 AutomatedTest_p2.py
+```
+#### or
+
+```
+python3 AutomatedTest_p3.py
+```
+
 ## To run our CLI:
 
 ### Pull the following docker image
