@@ -46,4 +46,27 @@ docker run --rm --network mynet -p 8000:4000 daniul/tcmg-group-3-app:latest
 ```
 AutomatedTest_p3.py
 ```
+## To run our CLI:
 
+### Pull the following docker image
+
+```
+docker pull daniul/tcmg-group-3-app-cli:latest
+```
+### Run the docker image with the --help flag to see how to use the CLI
+
+#### If on M1/M2 Apple Chip
+```
+docker run --platform linux/arm64 -it daniul/tcmg-group-3-app-cli:latest --help
+```
+#### If on other platforms
+```
+docker run --platform linux/amd64 -it daniul/tcmg-group-3-app-cli:latest --help
+````
+
+### Here's an example of how to run the cli via Docker on a M1/M2 chip
+
+```
+docker run --platform linux/arm64 -it daniul/tcmg-group-3-app-cli:latest is-prime 23
+
+```
