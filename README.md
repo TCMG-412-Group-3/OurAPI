@@ -3,6 +3,8 @@
 
 Docker hub url: https://hub.docker.com/r/daniul/tcmg-group-3-app/
 
+Docker hub url for CLI: https://hub.docker.com/r/daniul/tcmg-group-3-app-cli/tags
+
 
 ## To pull our docker image:
 docker pull daniul/tcmg-group-3-app:latest
