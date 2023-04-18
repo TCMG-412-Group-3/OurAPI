@@ -1,0 +1,14 @@
+1 Watch your code repo, and automatically trigger when changes are detected
+This can be achieved by setting up a webhook in your GitHub repository that triggers a build process when code changes are pushed to the repository.
+2 Run your test suite to validate that new changes have not introduced regressions to previously-validated functionality
+You can run your test suite using a testing framework like Pytest or Unittest in the build process. You can configure your CI/CD tool to run these tests automatically during the build process.
+3 Build a new Docker image from the code
+You can use the Dockerfile you've created previously to build a new Docker image in the build process.
+4 Push the Docker image up to your Docker Hub account
+You can use the Docker CLI or Docker SDK to push the Docker image to your Docker Hub account in the build process.
+5 Deploy the new image to a live environment in GCP that is available to the Internet
+You can use a cloud service like Google Kubernetes Engine (GKE) or Amazon Elastic Container Service (ECS) to deploy the Docker image to a live environment that is available to the Internet.
+6 Use the GitHub’s Encrypted Secrets feature to remove sensitive information from your repo, and pass it in to the build stage using the secrets workflow context and environment variables (when appropriate)
+You can use the GitHub's Encrypted Secrets feature to store sensitive information like credentials, keys, or webhook URLs in your repository securely. You can then pass this information to the build process using environment variables or secrets workflow context.
+7 Bonus points if you integrate your CLI code/repo into the build pipeline (but not required)
+You can integrate your CLI code or repository into the build pipeline to automate CLI testing or deployment.
