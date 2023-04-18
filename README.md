@@ -78,17 +78,17 @@ docker pull daniul/tcmg-group-3-app-cli:latest
 
 #### If on M1/M2 Apple Chip
 ```
-docker run --platform linux/arm64 -it daniul/tcmg-group-3-app-cli:latest --help
+docker run --platform linux/arm64 --rm -it daniul/tcmg-group-3-app-cli:latest --help
 ```
 #### If on other platforms
 ```
-docker run --platform linux/amd64 -it daniul/tcmg-group-3-app-cli:latest --help
+docker run --platform linux/amd64 --rm -it daniul/tcmg-group-3-app-cli:latest --help
 ````
 
 ### Here's an example of how to run the cli via Docker on a M1/M2 chip
 
 ```
-docker run --platform linux/arm64 -it daniul/tcmg-group-3-app-cli:latest is-prime 23
+docker run --platform linux/arm64 --rm -it daniul/tcmg-group-3-app-cli:latest is-prime 23
 
 ```
 
