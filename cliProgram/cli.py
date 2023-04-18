@@ -43,7 +43,8 @@ def slack_alert(input: str = typer.Argument(..., help="The message to send to th
 
 @app.command()
 def key_val(key: str = typer.Argument(..., help="The key to store the value under"),
-            value: str = typer.Argument(..., help="The value to store"),
+            #make value optional for GET requests
+            value: str = typer.Argument(None, help="The value to store"),
             delete: bool = typer.Option(False, "--delete", "-d", help="Delete a key-value pair"),
             update: bool = typer.Option(False, "--update", "-u", help="Update a key-value pair"),
             create: bool = typer.Option(False, "--create", "-c", help="Create a key-value pair")
