@@ -91,3 +91,7 @@ docker run --platform linux/amd64 -it daniul/tcmg-group-3-app-cli:latest --help
 docker run --platform linux/arm64 -it daniul/tcmg-group-3-app-cli:latest is-prime 23
 
 ```
+
+
+
+hi
