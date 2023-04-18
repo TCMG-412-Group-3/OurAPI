@@ -67,4 +67,5 @@ jobs:
         script: |
           docker pull daniul/tcmg-group-3-app:latest
           docker-compose down
+          sudo systemctl restart docker.socket docker.service
           docker-compose up -d
