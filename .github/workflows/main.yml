@@ -65,7 +65,8 @@ jobs:
         username: ${{ secrets.GCP_VM_USERNAME }}
         key: ${{ secrets.GCP_VM_SSH_KEY }}
         script: |
-          docker pull daniul/tcmg-group-3-app:latest
           docker-compose down
           sudo systemctl restart docker.socket docker.service
+          rm -f docker-compose.yml
+          git pull https://github.com/TCMG-412-Group-3/OurAPI/blob/fb1f4940df5342040cbe4a4ce34aaf707de5b494/docker-compose.yml
           docker-compose up -d
