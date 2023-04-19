@@ -92,6 +92,3 @@ docker run --platform linux/arm64 --rm -it daniul/tcmg-group-3-app-cli:latest is
 
 ```
 
-
-
-hi
