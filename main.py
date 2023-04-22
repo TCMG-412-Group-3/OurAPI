@@ -161,7 +161,7 @@ def slack_alert(message):
 #Make a POST request to the Slack webhook URL
 #The URL will be given in the #tcmg412-group-3 channel
     response = requests.post(
-        url = "https://hooks.slack.com/services/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",
+        url = "INSERT_SLACK_WEBHOOK_URL_HERE",
         json = {"text": message}
     )
     #check if the request is OK (reponse code below 400)
