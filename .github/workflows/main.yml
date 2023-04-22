@@ -57,9 +57,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        token: ${{ secrets.GH_TOKEN }}
 
     - name: Deploy to GCP VM instance
       uses: appleboy/ssh-action@master
@@ -71,5 +68,5 @@ jobs:
           docker-compose down
           sudo systemctl restart docker.socket docker.service
           rm -f docker-compose.yml
-          wget https://github.com/TCMG-412-Group-3/OurAPI/blob/fb1f4940df5342040cbe4a4ce34aaf707de5b494/docker-compose.yml 
+          wget --header="Authorization: token $GITHUB_TOKEN" https://github.com/TCMG-412-Group-3/OurAPI/blob/fb1f4940df5342040cbe4a4ce34aaf707de5b494/docker-compose.yml 
           docker-compose up -d
