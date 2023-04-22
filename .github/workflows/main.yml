@@ -68,5 +68,5 @@ jobs:
           docker-compose down
           sudo systemctl restart docker.socket docker.service
           rm -f docker-compose.yml
-          wget --header "Authorization: token $GITHUB_TOKEN" https://raw.githubusercontent.com/TCMG-412-Group-3/OurAPI/main/docker-compose.yml 
+          wget --header "Authorization: token ${{ secrets.GH_TOKEN }}" https://raw.githubusercontent.com/TCMG-412-Group-3/OurAPI/main/docker-compose.yml 
           docker-compose up -d
