@@ -57,6 +57,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GH_TOKEN }}
 
     - name: Deploy to GCP VM instance
       uses: appleboy/ssh-action@master
