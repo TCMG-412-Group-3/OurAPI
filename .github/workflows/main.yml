@@ -12,6 +12,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      
+    - name: replace slack webhook URL please
+      run: |
+        sed -i "s|INSERT_SLACK_WEBHOOK_URL_HERE|${{ secrets.SLACK_WEBHOOK_URL }}|g" main.py
 
     - name: Set up Python
       uses: actions/setup-python@v2
